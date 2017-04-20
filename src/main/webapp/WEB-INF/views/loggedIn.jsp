@@ -3,14 +3,33 @@
 <%@ page session="false" %>
 <html>
 <head>
-	<title>Home</title>
+	<title>TwitterFilter</title>
 </head>
 <body>
 <h1>
-	Hello world!  
+	Successfully logged in.
 </h1>
-
-<P>  The time on the server is ${serverTime}. </P>
-<P>  RES is ${res} </P>
+<form:form method = "POST" action = "/springmvc/login/getUserTimeline" >
+<table>
+	<tr>
+		<td><label name = "username"> Enter username: </label></td>
+		<td><input name = "username" /> </td>
+	</tr>
+    <tr>
+    	<td colspan = "4">
+    		<input style="width:100px;height:50px" type = "submit" value = "Filter"/>
+    	</td>
+    </tr>
+</table>
+</form:form>
+<P> Posts: </P>
+<c:forEach items="${statuses}" var="status">
+	<tr>
+		<td> ${status} </td>
+		<td />
+		<P />
+	</tr>
+</c:forEach>
+<P> The time on the server is ${serverTime}. </P>
 </body>
 </html>

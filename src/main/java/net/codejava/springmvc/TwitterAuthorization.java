@@ -21,6 +21,7 @@ public class TwitterAuthorization{
 	public String PIN = "";
 	public static Twitter twitter;
 	public static RequestToken requestToken;
+	public static TwitterFactory tf;
 	
 	public String getPIN(){
 		return this.PIN;
@@ -39,7 +40,7 @@ public class TwitterAuthorization{
         	.setOAuthConsumerKey("Pi2f4UQkPSgSfk2k7SVEbfrm6")
         	.setOAuthConsumerSecret("Bs1GMEEjj79A8zATTLWIPfQzoryAkCvLzTALYsLPgG4gg7d291");
 		
-        TwitterFactory tf = new TwitterFactory(cb.build());
+        tf = new TwitterFactory(cb.build());
         twitter = tf.getInstance();
              
         try {
