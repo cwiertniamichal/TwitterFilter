@@ -1,7 +1,9 @@
 package net.codejava.springmvc;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletRequest;
@@ -16,27 +18,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import twitter4j.Query;
-import twitter4j.QueryResult;
-import twitter4j.Status;
-import twitter4j.Twitter;
-import twitter4j.TwitterException;
-import twitter4j.TwitterFactory;
-import twitter4j.auth.AccessToken;
-import twitter4j.auth.RequestToken;
-import twitter4j.conf.ConfigurationBuilder;
-import twitter4j.conf.Configuration;
-
- 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-/**
- * Handles requests for the application home page.
- */
 @Controller
 public class HomeController {
-
+	public MessageFilter mf;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
@@ -58,13 +42,24 @@ public class HomeController {
 	}
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
-	public String login(Locale locale, Model model, @RequestParam("PIN")String PIN, HttpServletRequest request) {
-		if(TwitterAuthorization.login(PIN))
-			return "loggedIn";
+	public ModelAndView login(Locale locale, Model model, @RequestParam("PIN")String PIN, HttpServletRequest request) {
+		if(TwitterAuthorization.login(PIN)){
+			mf = new MessageFilter();
+			return new ModelAndView("loggedIn", "command", mf);
+		}
 		else{
 			String referer = request.getHeader("Referer");
-			return "redirect:" + referer;
+			return new ModelAndView("redirect:" + referer);
 		}
+	}
+	
+	@ModelAttribute("filterList")
+	public List<String> getFilterList(){
+		List<String> filterList = new ArrayList<String>();
+		filterList.add("author");
+		filterList.add("date");
+		filterList.add("key-words");
+		return filterList;
 	}
 
 	

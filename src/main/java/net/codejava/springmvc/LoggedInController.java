@@ -10,6 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -21,14 +22,21 @@ import twitter4j.Status;
 public class LoggedInController {
 	
 	@RequestMapping(value = "/login/getUserTimeline", method = RequestMethod.POST)
-	public String login(Locale locale, Model model, @RequestParam("username")String username) {
-		List<Status> statuses = MessageFilter.getUserTimeline(username);
-		List<String> messages = new ArrayList();
-		for(Status status : statuses){
-			messages.add(status.getText());
-		}
-		model.addAttribute("statuses", messages);
-		
-		return "loggedIn";
+	public ModelAndView login(Locale locale, Model model, @RequestParam("query")String query, 
+			@ModelAttribute("SpringWeb")MessageFilter mf) {
+		List<Tweet> tweets = mf.getUserTimeline(query);
+		model.addAttribute("tweets", tweets);
+		System.out.println(tweets);
+		return new ModelAndView("loggedIn", "command", mf);
 	}
+	
+	@ModelAttribute("filterList")
+	public List<String> getFilterList(){
+		List<String> filterList = new ArrayList<String>();
+		filterList.add("author");
+		filterList.add("date");
+		filterList.add("key-words");
+		return filterList;
+	}
+
 }
