@@ -12,8 +12,18 @@
 <form:form method = "POST" action = "/springmvc/login/getUserTimeline" >
 <table>
  	<tr>
-		<td><label name = "query"> Enter the key words: </label></td>
-		<td><input name = "query" /> </td>
+		<td><label name = "author"> Enter the author: </label></td>
+		<td><input name = "author" /> </td>
+	</tr>
+	<tr>
+		<td><label name = "key-words"> Enter the key-words: </label></td>
+		<td><input name = "key-words" /> </td>
+	</tr>
+	<tr>
+		<td><label name = "date-since"> Enter since date: </label></td>
+		<td><input name = "date-since" /> </td>
+		<td><label name = "date-until"> Enter until date: </label></td>
+		<td><input name = "date-until" /> </td>
 	</tr>
 	<tr>
 		<td><form:label path="filters"> Choose filter </form:label></td>

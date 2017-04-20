@@ -59,6 +59,7 @@ public class HomeController {
 		filterList.add("author");
 		filterList.add("date");
 		filterList.add("key-words");
+		filterList.add("all");
 		return filterList;
 	}
 
