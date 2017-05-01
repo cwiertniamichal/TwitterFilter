@@ -22,10 +22,15 @@ import twitter4j.Status;
 public class LoggedInController {
 	
 	@RequestMapping(value = "/login/getUserTimeline", method = RequestMethod.POST)
-	public ModelAndView login(Locale locale, Model model, @RequestParam("author")String author,
-			@RequestParam("key-words")String keyWords, @RequestParam("date-since")String dateSince,
-			@RequestParam("date-until")String dateUntil, @ModelAttribute("SpringWeb")MessageFilter mf) {
-		List<Tweet> tweets = mf.getUserTimeline(author, keyWords, dateSince, dateUntil);
+	public ModelAndView login(Locale locale, Model model, 
+			@RequestParam("author")String author,
+			@RequestParam("key-words")String keyWords, 
+			@RequestParam("date-since")String dateSince,
+			@RequestParam("date-until")String dateUntil, 
+			@RequestParam("pages-num")int pagesNum,
+			@ModelAttribute("SpringWeb")MessageFilter mf) {
+		List<Tweet> tweets = mf.getUserTimeline(author, keyWords, dateSince, dateUntil,
+				pagesNum);
 		model.addAttribute("tweets", tweets);
 		System.out.println(tweets);
 		return new ModelAndView("loggedIn", "command", mf);

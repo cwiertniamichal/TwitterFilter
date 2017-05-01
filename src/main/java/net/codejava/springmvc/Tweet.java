@@ -3,6 +3,7 @@ package net.codejava.springmvc;
 public class Tweet {
 	private String message;
 	private String author;
+	private String screenName;
 	private String date;
 	
 	public String getMessage() {
@@ -27,5 +28,13 @@ public class Tweet {
 	
 	public void setDate(String date) {
 		this.date = date;
+	}
+
+	public String getScreenName() {
+		return screenName;
+	}
+
+	public void setScreenName(String screenName) {
+		this.screenName = screenName;
 	}
 }

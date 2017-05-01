@@ -3,7 +3,9 @@ package net.codejava.springmvc;
 import java.util.ArrayList;
 import java.util.List;
 
+import twitter4j.Paging;
 import twitter4j.Query;
+import twitter4j.QueryResult;
 import twitter4j.Status;
 import twitter4j.Twitter;
 import twitter4j.TwitterException;
@@ -13,37 +15,64 @@ public class MessageFilter {
 	public List<String> filters;
 	
 	public List<Tweet> getUserTimeline(String author, String keyWords, String dateSince, 
-			String dateUntil ){	
+			String dateUntil, int pagesNum ){	
 		List<Status> statuses = null;
-		List<Tweet> tweets = null;
-		//String query = "";
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		Paging paging = new Paging(1, pagesNum);
+		String queryString = "";
+		
 		try{
 			if(filters.contains("all")){
-				System.out.println("HERE");
-				statuses = TwitterAuthorization.twitter.getHomeTimeline();
-				tweets = parseStatusesToTweets(statuses);
+				statuses = TwitterAuthorization.twitter.getHomeTimeline(paging);
+				//tweets = parseStatusesToTweets(statuses);
+			}
+			if(filters.contains("key-words")){			
+				queryString += "\"" + keyWords + "\"";
+				//Query q = new Query(keyWords);
+				//q.setCount(pagesNum);
+				
+				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
+				//tweets = parseStatusesToTweets(statuses);
+				/*
+				 * if statuses.hasNext()
+				 * {
+				 * 	query = result.nextQuery();
+				 *	result = twitter.search(query);
+				 * }
+				 */
+				
 			}
 			if(filters.contains("author")){
-				//query += "source:" + author;
-				statuses = TwitterAuthorization.twitter.getUserTimeline(author);
-				tweets = parseStatusesToTweets(statuses);
+				queryString += " from:" + author ;
+				//Query q = new Query("from:" + author);
+				//q.setCount(pagesNum);
+				
+				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
+				
+				//tweets = parseStatusesToTweets(statuses);
 			}
-			if(filters.contains("key-words")){
-				//query += keyWords;
-				Query q = new Query(keyWords);
-				statuses = TwitterAuthorization.twitter.search(q).getTweets();
-				tweets = parseStatusesToTweets(statuses);
-			}
-			//Query q = new Query(query);
 			if(filters.contains("date")) {
-				Query q = new Query("");
-				q.setSince(dateSince);
-				q.setUntil(dateUntil);
-				statuses = TwitterAuthorization.twitter.search(q).getTweets();
-				tweets = parseStatusesToTweets(statuses);
+				queryString += " since:" + dateSince + " until:" + dateUntil;
+				//Query q = new Query("");
+				//q.setCount(pagesNum);
+				//q.setSince(dateSince);
+				//q.setUntil(dateUntil);
+				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
+				//tweets = parseStatusesToTweets(statuses);
 			}
-			//statuses = TwitterAuthorization.twitter.search(q).getTweets();
-			//tweets = parseStatusesToTweets(statuses);
+			System.out.println(queryString);
+			Query q = new Query(queryString);
+			QueryResult result;
+			q.setCount(pagesNum);
+			result = TwitterAuthorization.twitter.search(q);
+			statuses = result.getTweets();
+			tweets = parseStatusesToTweets(statuses, tweets);
+			while(result.hasNext()){
+				q = result.nextQuery();
+				result = TwitterAuthorization.twitter.search(q);
+				statuses = result.getTweets();
+				tweets = parseStatusesToTweets(statuses, tweets);
+			}
 		}catch(TwitterException te){
 			te.printStackTrace();
 		}
@@ -59,12 +88,12 @@ public class MessageFilter {
 		this.filters = filters;
 	}
 	
-	public List<Tweet> parseStatusesToTweets(List<Status> statuses){
-		List<Tweet> tweets = new ArrayList();
+	public List<Tweet> parseStatusesToTweets(List<Status> statuses, List<Tweet> tweets){
 		for(Status status : statuses){
 			Tweet tweet = new Tweet();
-			tweet.setAuthor(status.getUser().getScreenName());
+			tweet.setScreenName(status.getUser().getScreenName());
 			tweet.setMessage(status.getText());
+			tweet.setAuthor(status.getUser().getName());
 			tweets.add(tweet);
 		}
 		return tweets;

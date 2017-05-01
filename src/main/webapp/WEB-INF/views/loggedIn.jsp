@@ -26,6 +26,10 @@
 		<td><input name = "date-until" /> </td>
 	</tr>
 	<tr>
+		<td><label name = "pages-num"> Enter number of pages: </label></td>
+		<td><input name = "pages-num" /> </td>
+	</tr>
+	<tr>
 		<td><form:label path="filters"> Choose filter </form:label></td>
 		<td><form:checkboxes items="${filterList}" path="filters" /> </td>
 	</tr>
@@ -40,7 +44,7 @@
 <P> Posts: </P>
 <c:forEach items="${tweets}" var="tweet">
 	<tr>
-		<td> Author: @${tweet.author} </td>
+		<td> Author: ${tweet.author} @${tweet.screenName} </td>
 		<br />
 	</tr>
 	<tr>
