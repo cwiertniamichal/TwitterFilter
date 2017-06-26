@@ -1,0 +1,6 @@
+*.pyc
+javaLog.txt
+*Thumbs.db
+*.iml
+*.settings
+*.classpath

@@ -20,7 +20,8 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class HomeController {
-	public MessageFilter mf;
+	
+	public MessageFilter messageFilter;
 	private static final Logger logger = LoggerFactory.getLogger(HomeController.class);
 	
 	/**
@@ -43,18 +44,18 @@ public class HomeController {
 	
 	@RequestMapping(value = "/login", method = RequestMethod.POST)
 	public ModelAndView login(Locale locale, Model model, @RequestParam("PIN")String PIN, HttpServletRequest request) {
-		if(TwitterAuthorization.login(PIN)){
-			mf = new MessageFilter();
-			return new ModelAndView("loggedIn", "command", mf);
+		if (TwitterAuthorization.login(PIN)) {
+			messageFilter = new MessageFilter();
+			return new ModelAndView("loggedIn", "command", messageFilter);
 		}
-		else{
+		else {
 			String referer = request.getHeader("Referer");
 			return new ModelAndView("redirect:" + referer);
 		}
 	}
 	
 	@ModelAttribute("filterList")
-	public List<String> getFilterList(){
+	public List<String> getFilterList() {
 		List<String> filterList = new ArrayList<String>();
 		filterList.add("author");
 		filterList.add("date");
