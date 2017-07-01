@@ -12,78 +12,71 @@ import twitter4j.TwitterException;
 public class MessageFilter {
 	public List<String> filters;
 	
-	public List<Tweet> getUserTimeline(String author, String keyWords, String dateSince, 
-			String dateUntil, int pagesNum ) {	
+	public List<Tweet> getUserTimeline(String allWords, String exactWords, String anyWords, String noWords, String hashes,  
+			String author, String recipient, String mentioned, String dateSince, String dateUntil, int tweetsPerPage,
+			int pageNum) {	
 		List<Status> statuses = null;
 		List<Tweet> tweets = new ArrayList<Tweet>();
-		Paging paging = new Paging(1, pagesNum);
+		
 		String queryString = "";
 		
 		try{
-			if(filters.contains("all")) {
-				statuses = TwitterAuthorization.twitter.getHomeTimeline(paging);
-				//tweets = parseStatusesToTweets(statuses);
+			if(!allWords.equals(""))
+				queryString += allWords + " ";
+			
+			if(!exactWords.equals(""))
+				queryString += "\"" + exactWords + "\" ";
+			
+			if(!anyWords.equals(""))
+				queryString += createOrQuery(anyWords, "");
+			
+			if(!noWords.equals("")){
+				String[] words = noWords.split("\\s+");
+				for(String word : words)
+					queryString += "-" + word + " ";
 			}
-			if(filters.contains("key-words")) {			
-				queryString += "\"" + keyWords + "\"";
-				//Query q = new Query(keyWords);
-				//q.setCount(pagesNum);
-				
-				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
-				//tweets = parseStatusesToTweets(statuses);
-				/*
-				 * if statuses.hasNext()
-				 * {
-				 * 	query = result.nextQuery();
-				 *	result = twitter.search(query);
-				 * }
-				 */
-				
-			}
-			if(filters.contains("author")) {
-				queryString += " from:" + author ;
-				//Query q = new Query("from:" + author);
-				//q.setCount(pagesNum);
-				
-				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
-				
-				//tweets = parseStatusesToTweets(statuses);
-			}
-			if(filters.contains("date")) {
+			
+			if(!hashes.equals(""))
+				queryString += createOrQuery(hashes, "#");
+			
+			if(!author.equals("")) 
+				queryString += createOrQuery(author, "from:");
+
+			if(!recipient.equals(""))
+				queryString += createOrQuery(recipient, "to:");
+			
+			if(!mentioned.equals(""))
+				queryString += createOrQuery(mentioned, "@");
+			
+			if(!dateSince.equals("")) 
 				queryString += " since:" + dateSince + " until:" + dateUntil;
-				//Query q = new Query("");
-				//q.setCount(pagesNum);
-				//q.setSince(dateSince);
-				//q.setUntil(dateUntil);
-				//statuses = TwitterAuthorization.twitter.search(q).getTweets();
-				//tweets = parseStatusesToTweets(statuses);
-			}
+
+			// debug 
 			System.out.println(queryString);
+			
 			Query query = new Query(queryString);
 			QueryResult result;
-			query.setCount(pagesNum);
+			
+			// set number of tweets per page, max 100
+			query.setCount(tweetsPerPage);
+			
 			result = TwitterAuthorization.twitter.search(query);
 			statuses = result.getTweets();
 			tweets = parseStatusesToTweets(statuses, tweets);
-			while(result.hasNext()) {
+			pageNum--;
+			
+			while(result.hasNext() && pageNum > 0) {
 				query = result.nextQuery();
 				result = TwitterAuthorization.twitter.search(query);
 				statuses = result.getTweets();
 				tweets = parseStatusesToTweets(statuses, tweets);
+				pageNum--;
 			}
+			
 		} catch(TwitterException exception) {
 			exception.printStackTrace();
 		}
 		return tweets;
-	}
-	
-	public List<String> getFilters() {
-		return this.filters;
-	}
-	
-	
-	public void setFilters(List<String> filters) {
-		this.filters = filters;
 	}
 	
 	public List<Tweet> parseStatusesToTweets(List<Status> statuses, List<Tweet> tweets) {
@@ -95,5 +88,21 @@ public class MessageFilter {
 			tweets.add(tweet);
 		}
 		return tweets;
+	}
+	
+	private String createOrQuery(String words, String prefix){
+		String orQuery = "";
+		String[] wordsArray = words.split("\\s+");
+		if(wordsArray.length == 1)
+			orQuery += prefix + wordsArray[0] + " ";
+		else{
+			int i = 0;
+			while(i + 1 < wordsArray.length){
+				orQuery += prefix + wordsArray[i] + " OR ";
+				i++;
+			}
+			orQuery += prefix + wordsArray[i] + " ";
+		}
+		return orQuery;
 	}
 }

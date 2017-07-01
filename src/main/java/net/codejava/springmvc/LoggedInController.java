@@ -21,21 +21,35 @@ public class LoggedInController {
 	@RequestMapping(value = "/login/getUserTimeline", method = RequestMethod.POST)
 	public ModelAndView login(Locale locale, Model model, 
 			@NotNull
+			@RequestParam("all-words")
+			String allWords,
+			@RequestParam("exact-words")
+			String exactWords, 
+			@RequestParam("any-words")
+			String anyWords, 
+			@RequestParam("no-words")
+			String noWords,
+			@RequestParam("hashes")
+			String hashes,
 			@RequestParam("author")
 			String author,
-			@RequestParam("key-words")
-			String keyWords, 
+			@RequestParam("recipient")
+			String recipient,
+			@RequestParam("mentioned")
+			String mentioned,
 			@RequestParam("date-since")
 			String dateSince,
 			@RequestParam("date-until")
 			String dateUntil,
+			@RequestParam("tweets-per-page")
+			int tweetsPerPage,
 			@NotNull
 			@Min(1)
 			@RequestParam("pages-num")
 			int pagesNum,
 			@ModelAttribute("SpringWeb")MessageFilter messageFilter) {
-		List<Tweet> tweets = messageFilter.getUserTimeline(author, keyWords, dateSince, dateUntil,
-				pagesNum);
+		List<Tweet> tweets = messageFilter.getUserTimeline(allWords, exactWords, anyWords, noWords, hashes, author, recipient, mentioned, 
+				dateSince, dateUntil, tweetsPerPage, pagesNum);
 		model.addAttribute("tweets", tweets);
 		System.out.println(tweets);
 		return new ModelAndView("loggedIn", "command", messageFilter);

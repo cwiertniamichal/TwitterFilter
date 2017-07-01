@@ -54,15 +54,15 @@ public class HomeController {
 		}
 	}
 	
-	@ModelAttribute("filterList")
-	public List<String> getFilterList() {
-		List<String> filterList = new ArrayList<String>();
-		filterList.add("author");
-		filterList.add("date");
-		filterList.add("key-words");
-		filterList.add("all");
-		return filterList;
-	}
+//	@ModelAttribute("filterList")
+//	public List<String> getFilterList() {
+//		List<String> filterList = new ArrayList<String>();
+//		filterList.add("author");
+//		filterList.add("date");
+//		filterList.add("key-words");
+//		filterList.add("all");
+//		return filterList;
+//	}
 
 	
 }
