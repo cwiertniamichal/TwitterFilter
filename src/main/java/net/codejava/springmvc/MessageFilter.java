@@ -12,7 +12,24 @@ import twitter4j.TwitterException;
 public class MessageFilter {
 	public List<String> filters;
 	
-	public List<Tweet> getUserTimeline(String allWords, String exactWords, String anyWords, String noWords, String hashes,  
+	public List<Tweet> getHomeTimeline(int tweetsNum){
+		List<Status> statuses = null;
+		List<Tweet> tweets = new ArrayList<Tweet>();
+		
+		Paging p = new Paging();
+		p.setCount(tweetsNum);
+		
+		try{
+			statuses = TwitterAuthorization.twitter.getHomeTimeline(p);
+		}catch (TwitterException e){
+			e.printStackTrace();
+		}
+		tweets = parseStatusesToTweets(statuses, tweets);
+		
+		return tweets;
+	}
+	
+	public List<Tweet> filterTweets(String allWords, String exactWords, String anyWords, String noWords, String hashes,  
 			String author, String recipient, String mentioned, String dateSince, String dateUntil, int tweetsPerPage,
 			int pageNum) {	
 		List<Status> statuses = null;

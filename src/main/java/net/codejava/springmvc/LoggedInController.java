@@ -17,8 +17,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoggedInController {
-	
-	@RequestMapping(value = "/login/getUserTimeline", method = RequestMethod.POST)
+	@RequestMapping(value = "/login/getHomeTimeline", method = RequestMethod.POST)
+	public ModelAndView login(Locale locale, Model model, @RequestParam("tweets-num") int tweetsNum,
+			@ModelAttribute("SpringWeb")MessageFilter messageFilter){
+		List<Tweet> tweets = messageFilter.getHomeTimeline(tweetsNum);
+		model.addAttribute("tweets", tweets);
+		return new ModelAndView("loggedIn", "command", messageFilter);
+	}
+			
+	@RequestMapping(value = "/login/filterTweets", method = RequestMethod.POST)
 	public ModelAndView login(Locale locale, Model model, 
 			@NotNull
 			@RequestParam("all-words")
@@ -48,21 +55,10 @@ public class LoggedInController {
 			@RequestParam("pages-num")
 			int pagesNum,
 			@ModelAttribute("SpringWeb")MessageFilter messageFilter) {
-		List<Tweet> tweets = messageFilter.getUserTimeline(allWords, exactWords, anyWords, noWords, hashes, author, recipient, mentioned, 
+		List<Tweet> tweets = messageFilter.filterTweets(allWords, exactWords, anyWords, noWords, hashes, author, recipient, mentioned, 
 				dateSince, dateUntil, tweetsPerPage, pagesNum);
 		model.addAttribute("tweets", tweets);
-		System.out.println(tweets);
 		return new ModelAndView("loggedIn", "command", messageFilter);
-	}
-	
-	@ModelAttribute("filterList")
-	public List<String> getFilterList() {
-		List<String> filterList = new ArrayList<String>();
-		filterList.add("author");
-		filterList.add("date");
-		filterList.add("key-words");
-		filterList.add("all");
-		return filterList;
 	}
 
 }

@@ -9,10 +9,28 @@
 <h1>
 	Successfully logged in.
 </h1>
+<h2> 
+	You can get your home timeline.
+</h2>
+<form:form method = "POST" action = "/springmvc/login/getHomeTimeline" >
+<table>
+	<tr>
+		<td><label name = "tweets-num"> Enter number of tweets: </label></td>
+		<td><input name = "tweets-num" value = "100" /> </td>
+	</tr>
+	<tr>
+		<td><input style="width:150px;height:50px" type = "submit" value = "Get home timeline"/></td>
+	</tr>
+</table>
+</form:form>
+
+<h2>
+	Or you can search for tweets using different filters.
+</h2>
 <P> Please do not forget to enter number of pages. </P>	
 <P> Date format is: yyyy-mm-dd. Date have to be used with other filters. </P>
 <P> When using none of this words filter you have to use other filter to get some tweets </P>
-<form:form method = "POST" action = "/springmvc/login/getUserTimeline" >
+<form:form method = "POST" action = "/springmvc/login/filterTweets" >
 <table>
 	<tr>
 		<td><label name = "all-words"> Containing all of this words: </label></td>

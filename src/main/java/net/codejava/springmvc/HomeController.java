@@ -53,16 +53,4 @@ public class HomeController {
 			return new ModelAndView("redirect:" + referer);
 		}
 	}
-	
-//	@ModelAttribute("filterList")
-//	public List<String> getFilterList() {
-//		List<String> filterList = new ArrayList<String>();
-//		filterList.add("author");
-//		filterList.add("date");
-//		filterList.add("key-words");
-//		filterList.add("all");
-//		return filterList;
-//	}
-
-	
 }
