@@ -122,8 +122,28 @@
     		<artifactId>twitter4j-core</artifactId>
     		<version>4.0.4</version>
 		</dependency>
+		
+		<dependency>
+    		<groupId>org.mockito</groupId>
+    		<artifactId>mockito-all</artifactId>
+    		<version>1.10.19</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>javax.validation</groupId>
+    		<artifactId>validation-api</artifactId>
+    		<version>1.0.0.GA</version>
+		</dependency>
+		
+		<dependency>
+    		<groupId>org.hibernate</groupId>
+    		<artifactId>hibernate-validator</artifactId>
+    		<version>4.2.0.Final</version>
+		</dependency>
 	</dependencies>
+	
     <build>
+    	<finalName>springmvc</finalName>
         <plugins>
             <plugin>
                 <artifactId>maven-eclipse-plugin</artifactId>
@@ -139,6 +159,11 @@
                     <downloadJavadocs>true</downloadJavadocs>
                 </configuration>
             </plugin>
+            <plugin>
+            	<groupId>org.apache.tomcat.maven</groupId>
+            	<artifactId>tomcat7-maven-plugin</artifactId>
+            	<version>2.0</version>
+        	</plugin>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

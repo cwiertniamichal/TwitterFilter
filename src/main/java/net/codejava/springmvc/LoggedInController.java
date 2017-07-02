@@ -1,6 +1,5 @@
 package net.codejava.springmvc;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,14 +16,24 @@ import org.springframework.web.servlet.ModelAndView;
 
 @Controller
 public class LoggedInController {
+	
+	/**
+	 * Returning new view with given number of tweets from home timeline.
+	 * Tweets are displayed one after another under command menu.
+	 */
 	@RequestMapping(value = "/login/getHomeTimeline", method = RequestMethod.POST)
 	public ModelAndView login(Locale locale, Model model, @RequestParam("tweets-num") int tweetsNum,
-			@ModelAttribute("SpringWeb")MessageFilter messageFilter){
+			@ModelAttribute("SpringWeb")MessageFilter messageFilter)
+	{
 		List<Tweet> tweets = messageFilter.getHomeTimeline(tweetsNum);
 		model.addAttribute("tweets", tweets);
 		return new ModelAndView("loggedIn", "command", messageFilter);
 	}
 			
+	/**
+	 * Returning new view with filtered tweets.
+	 * Tweets are displayed one after another under command menu.
+	 */
 	@RequestMapping(value = "/login/filterTweets", method = RequestMethod.POST)
 	public ModelAndView login(Locale locale, Model model, 
 			@NotNull
