@@ -1,4 +1,5 @@
 package tests;
+
 import static org.junit.Assert.*;
 
 import java.util.ArrayList;
@@ -85,11 +86,10 @@ public class MessageFilterTest {
 
 	@Test
 	public void queryAllTest() throws TwitterException {
-		Query query1 = new Query(
-				"test \"happy\" hour -hello #world from:@Korwin to:@Gwiazdowski "
+		Query query1 = new Query("test \"happy\" hour -hello #world from:@Korwin to:@Gwiazdowski "
 				+ "@Janusz  since:2015-12-21 until:2016-12-21");
-		Query query2 = messageFilter.createQuery("test", "happy", "hour", "hello", "world", 
-				"@Korwin", "@Gwiazdowski","Janusz", "2015-12-21", "2016-12-21");
+		Query query2 = messageFilter.createQuery("test", "happy", "hour", "hello", "world", "@Korwin", "@Gwiazdowski",
+				"Janusz", "2015-12-21", "2016-12-21");
 		assertEquals(query1, query2);
 	}
 

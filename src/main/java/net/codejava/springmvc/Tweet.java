@@ -1,13 +1,16 @@
 package net.codejava.springmvc;
 
+import java.util.Date;
+
 /**
  * This class represents a tweet from Twitter.
  */
 public class Tweet {
+
 	private String message;
 	private String author;
 	private String screenName;
-	private String date;
+	private Date date;
 
 	public String getMessage() {
 		return message;
@@ -25,11 +28,11 @@ public class Tweet {
 		this.author = author;
 	}
 
-	public String getDate() {
+	public Date getDate() {
 		return date;
 	}
 
-	public void setDate(String date) {
+	public void setDate(Date date) {
 		this.date = date;
 	}
 

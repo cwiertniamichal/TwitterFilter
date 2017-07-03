@@ -4,6 +4,7 @@
 <html>
 <head>
 	<title>TwitterFilter</title>
+	<link href="webjars/bootstrap/3.2.0/css/bootstrap.min.css" rel="stylesheet">
 </head>
 <body>
 <h1>
@@ -88,17 +89,26 @@
     </tr>
 </table>
 </form:form>
-<P> Posts: </P>
-<c:forEach items="${tweets}" var="tweet">
-	<tr>
-		<td> Author: ${tweet.author} @${tweet.screenName} </td>
-		<br />
-	</tr>
-	<tr>
-		<td> ${tweet.message} </td>
-	</tr>
-	<P />
-</c:forEach>
-<P> The time on the server is ${serverTime}. </P>
+
+<h1>Tweets:</h1>  
+<table class="table">
+  <thead>
+    <tr>
+      <th>Content</th>
+      <th>User</th>
+      <th>Date</th>
+    </tr>
+  </thead>
+  <tbody>
+   <c:forEach var="tweet" items="${tweets}">   
+   <tr>  
+   <td>${tweet.message}</td>  
+   <td>${tweet.author} @${tweet.screenName}</td>  
+   <td>${tweet.date}</td>  
+   </tr>  
+   </c:forEach> 
+  </tbody>
+</table>
+
 </body>
 </html>

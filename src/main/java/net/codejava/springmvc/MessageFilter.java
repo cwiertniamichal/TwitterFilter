@@ -10,8 +10,7 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 
 public class MessageFilter {
-	public List<String> filters;
-
+	
 	/**
 	 * Getting given number of tweets from timeline and returning it as list.
 	 */
@@ -121,6 +120,7 @@ public class MessageFilter {
 			tweet.setScreenName(status.getUser().getScreenName());
 			tweet.setMessage(status.getText());
 			tweet.setAuthor(status.getUser().getName());
+			tweet.setDate(status.getCreatedAt());
 			tweets.add(tweet);
 		}
 		return tweets;

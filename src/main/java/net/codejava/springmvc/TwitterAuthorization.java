@@ -8,7 +8,7 @@ import twitter4j.auth.RequestToken;
 import twitter4j.conf.ConfigurationBuilder;
 
 public class TwitterAuthorization {
-	
+
 	private String PIN = "";
 	public static Twitter twitter;
 	private static RequestToken requestToken;
@@ -37,7 +37,8 @@ public class TwitterAuthorization {
 		twitter = twitterFactory.getInstance();
 
 		// getting request token
-		// this will throw IllegalStateException if access token is already available
+		// this will throw IllegalStateException if access token is already
+		// available
 		// this is oob, desktop client version
 		try {
 			requestToken = twitter.getOAuthRequestToken();
