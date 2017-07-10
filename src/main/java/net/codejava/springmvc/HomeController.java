@@ -44,6 +44,7 @@ public class HomeController {
 	public ModelAndView login(Locale locale, Model model, @RequestParam("PIN") String PIN, HttpServletRequest request) {
 		if (TwitterAuthorization.login(PIN)) {
 			messageFilter = new MessageFilter();
+			MessageFilter.tweets = null;
 			return new ModelAndView("loggedIn", "command", messageFilter);
 		} else {
 			String referer = request.getHeader("Referer");

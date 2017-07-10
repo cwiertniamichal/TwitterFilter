@@ -110,5 +110,8 @@
   </tbody>
 </table>
 
+<h2> Save tweets to a file: </h2>
+ <a href="<c:url value='/login/download/txt' />">Download tweets as text file.</a>
+
 </body>
 </html>

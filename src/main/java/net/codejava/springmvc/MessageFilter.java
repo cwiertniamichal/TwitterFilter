@@ -1,7 +1,14 @@
 package net.codejava.springmvc;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.util.FileCopyUtils;
 
 import twitter4j.Paging;
 import twitter4j.Query;
@@ -10,6 +17,7 @@ import twitter4j.Status;
 import twitter4j.TwitterException;
 
 public class MessageFilter {
+	static List<Tweet> tweets;
 	
 	/**
 	 * Getting given number of tweets from timeline and returning it as list.
@@ -144,4 +152,31 @@ public class MessageFilter {
 		}
 		return orQuery;
 	}
+	
+	/**
+	 * This method downloads tweets from a server.
+	 */
+    public void downloadFile(HttpServletResponse response, List<Tweet> tweets) throws IOException {
+		String stream = "";
+		if(tweets != null){
+			for(Tweet tweet: tweets){
+				stream += tweet.getMessage() + tweet.getAuthor() + tweet.getDate() + "\n";
+			}
+		}
+		
+		try {
+		      // get your file as InputStream
+		      InputStream is = new ByteArrayInputStream(stream.getBytes("UTF-8"));
+		      String mimeType = "application/octet-stream";
+		      response.setContentType(mimeType);
+		      response.setHeader("Content-Disposition", String.format("attachement; filename=\"" + "tweets.txt" +"\""));
+		      FileCopyUtils.copy(is, response.getOutputStream());
+		      response.flushBuffer();
+		    } catch (IOException ex) {
+		      throw new RuntimeException("IOError writing file to output stream");
+		    }
+
+	}
+	
+	
 }
